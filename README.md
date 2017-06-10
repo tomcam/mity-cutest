@@ -1,5 +1,5 @@
 # mity-cutest tutorial
-Tutorial for cutest.h C unit testing framework by mity
+Tutorial for CUTest C unit testing framework by mity
 
 This step-by-step tutorial shows how to create a unit test suite for modules written in C.
 
@@ -10,6 +10,7 @@ This step-by-step tutorial shows how to create a unit test suite for modules wri
 
 # MISSING
 * How to get cutest.h
+* Overviews. Explain why each thing is being done.
 
 ## Create the library files
 
@@ -44,6 +45,9 @@ float area(float radius);
 
 ```c
 #include "area.h"
+/* Obtain the area of a circle given its radius.
+ * Return -1 if given an invalid value.
+ */
 float area(float radius)
 {
     if (radius <= 0)
@@ -65,8 +69,68 @@ Determining the area of a circle is easy, but normally examples contain no error
 $ gcc -std=c99 fsize.c -c
 ```
 
+#### Notes:
+
 If you're not used to compiling with the command line, some notes.
 
 * `gcc` is the name of the compiler. On MacOS you may need to download [Xcode](https://developer.apple.com/xcode/downloads/). If you haven't done so before you will be required to create a free developer's account for the privilege.
-* The command-line flag `std=c99` forces a compile using the [C99 standard](https://en.wikipedia.org/wiki/C99) version of the language. It is useful here primarily because this code uses `//` comments instead of the older `/*  */` style.
+* The command-line flag `-std=c99` forces a compile using the [C99 standard](https://en.wikipedia.org/wiki/C99) version of the language. It is useful here primarily because this code uses `//` comments instead of the older `/*  */` style.
 * The command-line flag `-c` means compile but do not make an executable. Compile and correct your source as many times as is necessary until `gcc` yields no output, which means success. There's no `main` in this code so it wouldn't work anyway.
+
+## Create the mininum test harness with a main() and no tests
+
+To test your library, you need a driver file with a `main()` from which you will call the tests. CUTest generates it automatically from a list of test functions you supply it. Let's create the simplest possible test harness using `cutest.h` just to make sure everything compiles properly and the executable runs.
+
+### Obtain cutest.h
+
+First you need `cutest.h`, which can be found on GitHub at [https://github.com/mity/cutest/](https://github.com/mity/cutest/).
+
+* Copy the file [cutest.h](https://raw.githubusercontent.com/mity/cutest/master/include/cutest.h) from [https://raw.githubusercontent.com/mity/cutest/master/include/cutest.h](https://raw.githubusercontent.com/mity/cutest/master/include/cutest.h) into your project directory. 
+
+Yes, Git users, this is an ugly cheat because it bypasses normal use of git and GitHub, but version control isn't part of the tutorial.
+
+### Create and compile the test harness test_area.c
+
+The absolute minimal test configuration is... no tests. The driver executable will be named `test_area` and CUTest generates the `main()` function automatically. This step lets you get the `main()` function running and make sure CUTest compiles without any distractions.yf
+* First, create the minimal test harness `test_area.c` as follows:
+
+```c
+#include "cutest.h"
+#include "area.h"
+
+TEST_LIST = {
+    { 0 }
+};
+```
+
+* Compile the files area.c and test_area.c and create an executable with this command line:
+
+```bash
+$ gcc -std=c99 area.c test_area.c -o test_area
+```
+
+Compile and correct your source as many times as is necessary until `gcc` yields no output, which means success. There's no `main` in this code so it wouldn't work anyway.
+
+* Run the file:
+
+```bash
+$ ./test_area
+```
+
+The output looks like this:
+
+```bash
+
+Summary:
+  SUCCESS: All unit tests have passed.
+```
+
+
+#### Notes:
+
+* The compile-only flag `-c` has been omitted, of course, because the goal is to create an executable.
+* There is a new command-line option. The command-line flag `-o` is followed by the name you wish to give your executable. 
+
+
+
+
