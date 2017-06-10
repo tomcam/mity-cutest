@@ -67,7 +67,7 @@ Determining the area of a circle is easy, but normally examples contain no error
 $ gcc -std=c99 fsize.c -c
 ```
 
-#### Notes:
+#### Notes
 
 If you're not used to compiling with the command line, some notes.
 
@@ -123,13 +123,13 @@ Summary:
   SUCCESS: All unit tests have passed.
 ```
 
-#### Notes:
+#### Notes
 
 * The compile-only flag `-c` has been omitted, of course, because the goal is to create an executable.
 * There is a new command-line option. The command-line flag `-o` is followed by the name you wish to give your executable. 
 
 
-## Add a simple test to test_area.c
+## Add a simple test unit to test_area.c
 
 The first test couldn't be easier. It simply verifies that the constant PI, defined in the file `area.h`, is correct to 7 digits to the right of the decimal point.
 
@@ -221,7 +221,106 @@ void pi_accurate_to_7_digits(void)
 }
 ```
 
+### Compile and run the unit test
+
+Let's see what happens with a successful unit test. Compile and run:
+
+```bash
+$ gcc -std=c99 area.c test_area.c -o test_area
+$ ./test_area
+```
+
+The output is more interesting now:
+
+```bash
+Test PI accurate to 7 digits... [   OK   ]
+
+Summary:
+  SUCCESS: All unit tests have passed.
+```
+
+### Run the unit test with the --verbose flag
+
+Remember how CUTest automatically creates a `main()` function for you? It has some command-line options. Let's see what happens when you use its `--verbose` flag.
+
+```bash
+$ ./test_area --verbose
+Test PI accurate to 7 digits:
+  test_area.c:18: Check PI == 3.1415927f... ok
+  All conditions have passed.
 
 
+Summary:
+  Count of all unit tests:        1
+  Count of run unit tests:        1
+  Count of failed unit tests:     0
+  Count of skipped unit tests:    0
+  SUCCESS: All unit tests have passed.
+```
+
+#### Notes
+
+* You can use `-v` instead of `--verbose`
+* You can get a list of all command-line options using `--help` or `-h`:
+
+```bash
+Run the specified unit tests; or if the option '--skip' is used, run all
+tests in the suite but those listed.  By default, if no tests are specified
+on the command line, all unit tests in the suite are run.
+
+Options:
+  -s, --skip            Execute all unit tests but the listed ones
+      --no-exec         Do not execute unit tests as child processes
+      --no-summary      Suppress printing of test results summary
+  -l, --list            List unit tests in the suite and exit
+  -v, --verbose         Enable more verbose output
+      --verbose=LEVEL   Set verbose level to LEVEL:
+                          0 ... Be silent
+                          1 ... Output one line per test (and summary)
+                          2 ... As 1 and failed conditions (this is default)
+                          3 ... As 1 and all conditions (and extended summary)
+      --color=WHEN      Enable colorized output (WHEN is one of 'auto', 'always', 'never')
+  -h, --help            Display this help and exit
+
+Unit tests:
+  PI accurate to 7 digits
+```
+
+It can do more. We'll come back round to it later. First let's see what happens when a unit test fails.
+
+## Creating a unit test that fails
+
+Here's what it looks like when a unit test fails. In this case we'll force a failure by modifying the `PI` declaration without modifying its test.
+
+### Change the PI declaration in area.h
+
+* Modify the PI constant declaration in area.h. The only test so far ensures that PI is accurate to 7 digits, so let's just lop off the 7. 
+
+```c
+#ifndef __AREA__
+#define __AREA__
+float area(float radius);
+#define PI 3.141592f /* Was 3.1415927f */
+#endif
+```
+
+* Compile and run:
+
+```bash
+$ gcc -std=c99 area.c test_area.c -o test_area
+$ ./test_area
+```
+
+And the output changes:
+
+```bash
+Test PI accurate to 7 digits... [ FAILED ]
+  test_area.c:18: Check PI == 3.1415927f... failed
+
+Summary:
+  FAILED: 1 of 1 unit tests have failed.
+```
+
+#define PI 3.1415927f
 
     TEST_CHECK_(PI == 3.1415927, "PI should be %.07f. It is \n", PI);
