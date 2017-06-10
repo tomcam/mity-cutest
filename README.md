@@ -1,11 +1,15 @@
 # Tutorial for CUTest C unit testing framework by mity
 
-This step-by-step tutorial shows how to create a unit test suite for modules written in C. It assumes you are using a command-line C compiler (gcc in this case).
+This step-by-step tutorial shows how to create a unit test suite for modules written in C. The target is intermediate C programmers who want a little handholding with an easy-to-understand unit testing framework, in this case Mity's [CUTest](https://github.com/mity/cutest/](https://github.com/mity/cutest/).It assumes you are using a command-line C compiler (gcc in this case). It contains full copy/pastable code to:
 
 * Create a tiny library written in C consisting of a single source and single header file. This is a library file so it doesn't have a `main()`.
 * Compile it using the command line (Unix/MacOS)
 * Add simple unit tests by including [cutest.h](https://github.com/mity/cutest) by Martin Mitáš, aka [mity](https://github.com/mity) on GitHub and invoking macros such as `TEST_CHECK()` containing boolean expressions, where zero means a failed test
 * Run the unit tests. See how both success and failure look.
+
+#### IMPORTANT NOTE
+
+**Feel free to contact me at tomcampbell at gmail.com with complaints or suggestions! **
 
 ## Create the library module to test
 
