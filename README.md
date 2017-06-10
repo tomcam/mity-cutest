@@ -287,6 +287,8 @@ Summary:
 * You can get a list of all command-line options using `--help` or `-h`. Here's what the output looks like in verbose mode:
 
 ```bash
+$ ./test_area --help
+
 Run the specified unit tests; or if the option '--skip' is used, run all
 tests in the suite but those listed.  By default, if no tests are specified
 on the command line, all unit tests in the suite are run.
