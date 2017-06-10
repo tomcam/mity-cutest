@@ -152,7 +152,6 @@ Here's that process in detail. Don't worry, the whole file is shown at the end i
 ### 1. Add the prototype above the `TEST_LIST` macro declaration
 
 To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. Add this prototype above the `TEST_LIST` macro in the test harness test_area.c. 
-
 ```c
 void pi_accurate_to_7_digits(void);
 
@@ -166,6 +165,7 @@ TEST_LIST = {
 * Add a simple description in quotes, followed by a comma, and that function's name to the TEST_LIST macro. 
 * Enclose all this in curly braces. 
 * It is actually an array declaration so end each entry in the array with a comma too.
+* Make sure it appears the `{ 0 }` element
 
 The description appears when the unit tests are run. Here's the whole thing:
 
@@ -336,7 +336,7 @@ Summary:
   FAILED: 1 of 1 unit tests have failed.
 ```
 
-## Display more information with TEST_CHECK_
+## Displaying more information with TEST_CHECK_
 
 Suppose you need more information than the `TEST_CHECK` macro supplies. You can append an expression similar to a `printf()` format string with the similarly-named `TEST_CHECK_` macro. In this example, let's print both what we expect PI to be and what its actual value is. Change it as follows: 
 
@@ -356,3 +356,9 @@ Test PI accurate to 7 digits... [ FAILED ]
 Summary:
   FAILED: 1 of 1 unit tests have failed.
 ```
+
+Now go back and restore PI to its rightful value of 3.1415927f in `area.h` before you forget.
+
+## Adding another test
+
+Let's add a unit test with a bit more 
