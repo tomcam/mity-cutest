@@ -321,6 +321,23 @@ Summary:
   FAILED: 1 of 1 unit tests have failed.
 ```
 
-#define PI 3.1415927f
+## Display more information with TEST_CHECK_
 
-    TEST_CHECK_(PI == 3.1415927, "PI should be %.07f. It is \n", PI);
+Suppose you need more information than the `TEST_CHECK` macro supplies. You can append an expression similar to a `printf()` format string with the similarly-named `TEST_CHECK_` macro. In this example, let's print both what we expect PI to be and what its actual value is. Change it as follows: 
+
+```c
+void pi_accurate_to_7_digits(void)
+{
+    TEST_CHECK_(PI == 3.1415927f, "PI expected: 3.1415927. Actual: %1.7f", PI);
+}
+```
+
+When you compile and run, the output now looks like this.
+
+```bash
+Test PI accurate to 7 digits... [ FAILED ]
+  test_area.c:18: Check PI expected: 3.1415927. Actual: 3.1415920... failed
+
+Summary:
+  FAILED: 1 of 1 unit tests have failed.
+```
