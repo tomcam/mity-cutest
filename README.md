@@ -35,6 +35,7 @@ $ cd ~/c/circle
 * Create a header file named area.h:
 
 ```c
+/* area.h */
 #ifndef __AREA__
 #define __AREA__
 float area(float radius);
@@ -45,7 +46,9 @@ float area(float radius);
 * Create the library file area.c:
 
 ```c
+/* area.c */
 #include "area.h"
+
 /* Obtain the area of a circle given its radius.
  * Return -1 if given an invalid value.
  */
@@ -97,6 +100,7 @@ The absolute minimal test configuration is... no tests, but this step lets you g
 * First, create the minimal test harness `test_area.c` as follows:
 
 ```c
+/* test_area.c */
 #include "cutest.h"
 #include "area.h"
 
@@ -153,7 +157,8 @@ Here's that process in detail. Don't worry, the whole file is shown at the end i
 
 ### 1. Add the prototype above the `TEST_LIST` macro declaration
 
-To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. Add this prototype above the `TEST_LIST` macro in the test harness test_area.c. 
+To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. Add this prototype above the `TEST_LIST` macro in the test harness test_area.c 
+
 ```c
 void pi_accurate_to_7_digits(void);
 
@@ -215,6 +220,7 @@ void pi_accurate_to_7_digits(void)
 The expression is simple because the test is simple. Here's the completed test_area.c file looks like this:
 
 ```c
+/* test_area.c */
 #include "cutest.h"
 #include "area.h"
 
@@ -314,6 +320,7 @@ Here's what it looks like when a unit test fails. In this case we'll force a fai
 * Modify the PI constant declaration in area.h. The only test so far ensures that PI is accurate to 7 digits, so let's just lop off the 7. 
 
 ```c
+/* area.h */
 #ifndef __AREA__
 #define __AREA__
 float area(float radius);
