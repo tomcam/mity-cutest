@@ -4,15 +4,12 @@ This step-by-step tutorial shows how to create a unit test suite for modules wri
 
 * Create a tiny library written in C consisting of a single source and single header file. This is a library file so it doesn't have a `main()`.
 * Compile it using the command line (Unix/MacOS)
-* Add simple unit tests by including [cutest.h](https://github.com/mity/cutest) by Martin Mitáš, aka [mity](https://github.com/mity) on GitHub
+* Add simple unit tests by including [cutest.h](https://github.com/mity/cutest) by Martin Mitáš, aka [mity](https://github.com/mity) on GitHub and invoking macros such as `TEST_CHECK()` containing boolean expressions, where zero means a failed test
 * Run the unit tests. See how both success and failure look.
-
-# MISSING
-* Overviews. Explain why each thing is being done.
 
 ## Create the library module to test
 
-The library will consist of a simple function to compute the area of a circle. It has some error checking, which is not only good practice but illustrates how to implement tests with incorrect inputs and show expected behavior.
+The first step in this tutorial is to write some normal C code. The library will consist of a simple function to compute the area of a circle. It has some error checking, which is not only good practice but illustrates how to implement tests with incorrect inputs and show expected behavior. Because it's a library there will be no `main()` function in the source; CUTest supplies it automatically.
 
 ### Create a directory named circle
 
@@ -89,7 +86,8 @@ Yes, Git users, this is an ugly cheat because it bypasses normal use of git and 
 
 ### Create and compile the test harness test_area.c
 
-The absolute minimal test configuration is... no tests. The driver executable will be named `test_area` and CUTest generates the `main()` function automatically. This step lets you get the `main()` function running and make sure CUTest compiles without any distractions.yf
+The absolute minimal test configuration is... no tests, but this step lets you get the generated `main()` function running. The driver executable will be named `test_area` Do this to ensure CUTest compiles without any distractions.
+
 * First, create the minimal test harness `test_area.c` as follows:
 
 ```c
@@ -101,13 +99,15 @@ TEST_LIST = {
 };
 ```
 
+The filename can be anything. It doesn't need to start with `test_`.
+
 * Compile the files area.c and test_area.c and create an executable with this command line:
 
 ```bash
 $ gcc -std=c99 area.c test_area.c -o test_area
 ```
 
-Compile and correct your source as many times as is necessary until `gcc` yields no output, which means success. There's no `main` in this code so it wouldn't work anyway.
+Compile and correct your source as many times as is necessary until `gcc` yields no output, which means success.
 
 * Run the file:
 
@@ -125,15 +125,17 @@ Summary:
 
 #### Notes
 
+* This shows that a `main()` function was called. The `area()` function never executed because nothing has yet been defined to do so.
 * The compile-only flag `-c` has been omitted, of course, because the goal is to create an executable.
-* There is a new command-line option. The command-line flag `-o` is followed by the name you wish to give your executable. 
+* There is a new command-line option. The command-line flag `-o`, meaning it is followed by the name you wish to give your output file (the executable). 
 
+## Add a simple unit test
 
-## Add a simple test unit to test_area.c
+So `main()` ran but no tests were run because none has yet been defined. Time to add one to `test_area.c`.
 
 The first test couldn't be easier. It simply verifies that the constant PI, defined in the file `area.h`, is correct to 7 digits to the right of the decimal point.
 
-To add a test:
+Here's what you need to do to add a test case:
 
 1. Write a test function prototype returning void with void arguments
 2. Add a description in quotes, followed by the the name of that test function only (not its entire signature) to the `TEST_LIST` array macro declaration
@@ -141,13 +143,11 @@ To add a test:
 4. Add a TEST_CHECK macro to your test function. It is a macro that evaluates to a nonzero/zero result. (Another macro named TEST_CHECK_ will be discussed later.)
 5. Recompile and run your tests
 
-Here's that process in detail.
+Here's that process in detail. Don't worry, the whole file is shown at the end if you're not sure what happens in each step.
 
-### 1. Add the prototype `void is_pi_accurate_to_7_digits(void);` above the `TEST_LIST` macro declaration:
+### 1. Add the prototype above the `TEST_LIST` macro declaration
 
-Let's revisit the test harness test_area.c. 
-
-To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. Add this prototype above the `TEST_LIST` macro:
+To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. Add this prototype above the `TEST_LIST` macro in the test harness test_area.c. 
 
 ```c
 void pi_accurate_to_7_digits(void);
@@ -157,9 +157,13 @@ TEST_LIST = {
 };
 ```
 
-### 2. Add a simple description in quotes, followed by a comma, and that function's name to the TEST_LIST macro. Enclose all this in curly braces. It is actually an array declaration so end each entry in the array with a comma too
+### 2. Add a simple description in quotes followed by the function's name to the TEST_LIST macro
 
-The description appears when the unit tests are run.
+* Add a simple description in quotes, followed by a comma, and that function's name to the TEST_LIST macro. 
+* Enclose all this in curly braces. 
+* It is actually an array declaration so end each entry in the array with a comma too.
+
+The description appears when the unit tests are run. Here's the whole thing:
 
 ```c
 void pi_accurate_to_7_digits(void);
@@ -171,6 +175,8 @@ TEST_LIST = {
 ```
 
 ### 3. Add the code for that function below the TEST_LIST macro. 
+
+Now write the function itself. Place it below the `TEST_LIST` declaration. There's no code here because this function will contain nothing but a `TEST_CHECK` macro. However, arbitrary C code is allowed here.
 
 ```c
 TEST_LIST = {
@@ -185,19 +191,22 @@ void pi_accurate_to_7_digits(void)
 
 ```
 
-### 4. Include a TEST_CHECK macro, which is an expression evaluating to a boolean result
+### 4. Insert TEST_CHECK macros in the code
 
-This is any old C function. You can also include arbitrary code. In this case the only thing we need is the `TEST_CHECK` macro, which must evaluate to nonzero in order to pass the unit test:
+Finally, the test itself. 
+
+The test function is any old C function as long as it has the prescribed signature of void return and void parameters. It can  include any code. In this example we needonly  the `TEST_CHECK` macro.
+
+Remember the test macro must evaluate to nonzero in order to pass the unit test:
 
 ```c
 void pi_accurate_to_7_digits(void)
 {
-    TEST_CHECK_(PI == 3.1415927);
+    TEST_CHECK(PI == 3.1415927);
 }
 ```
 
-
-* The completed test_area.c file looks like this:
+The expression is simple because the test is simple. Here's the completed test_area.c file looks like this:
 
 ```c
 #include "cutest.h"
@@ -221,7 +230,7 @@ void pi_accurate_to_7_digits(void)
 }
 ```
 
-### Compile and run the unit test
+### 5. Compile and run the unit test
 
 Let's see what happens with a successful unit test. Compile and run:
 
@@ -239,9 +248,11 @@ Summary:
   SUCCESS: All unit tests have passed.
 ```
 
+Congratulations! You have written your first unit test.
+
 ### Run the unit test with the --verbose flag
 
-Remember how CUTest automatically creates a `main()` function for you? It has some command-line options. Let's see what happens when you use its `--verbose` flag.
+Remember how CUTest automatically creates a `main()` function for you? It has some command-line options. Let's see what happens when you run the test again, passing it a `--verbose` flag on the command line.
 
 ```bash
 $ ./test_area --verbose
@@ -261,7 +272,7 @@ Summary:
 #### Notes
 
 * You can use `-v` instead of `--verbose`
-* You can get a list of all command-line options using `--help` or `-h`:
+* You can get a list of all command-line options using `--help` or `-h`. Here's what the output looks like in verbose mode:
 
 ```bash
 Run the specified unit tests; or if the option '--skip' is used, run all
