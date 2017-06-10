@@ -1,7 +1,6 @@
-# mity-cutest tutorial
-Tutorial for CUTest C unit testing framework by mity
+# Tutorial for CUTest C unit testing framework by mity
 
-This step-by-step tutorial shows how to create a unit test suite for modules written in C.
+This step-by-step tutorial shows how to create a unit test suite for modules written in C. It assumes you are using a command-line C compiler (gcc in this case).
 
 * Create a tiny library written in C consisting of a single source and single header file. This is a library file so it doesn't have a `main()`.
 * Compile it using the command line (Unix/MacOS)
@@ -9,12 +8,11 @@ This step-by-step tutorial shows how to create a unit test suite for modules wri
 * Run the unit tests. See how both success and failure look.
 
 # MISSING
-* How to get cutest.h
 * Overviews. Explain why each thing is being done.
 
-## Create the library files
+## Create the library module to test
 
-The library will consist of a simple function to compute the area of a circle. It has some error checking
+The library will consist of a simple function to compute the area of a circle. It has some error checking, which is not only good practice but illustrates how to implement tests with incorrect inputs and show expected behavior.
 
 ### Create a directory named circle
 
@@ -125,12 +123,35 @@ Summary:
   SUCCESS: All unit tests have passed.
 ```
 
-
 #### Notes:
 
 * The compile-only flag `-c` has been omitted, of course, because the goal is to create an executable.
 * There is a new command-line option. The command-line flag `-o` is followed by the name you wish to give your executable. 
 
 
+## Add a simple test to test_area.c
 
+The first test couldn't be easier. It simply verifies that the constant PI, defined in the file `area.h`, is correct to 7 digits to the right of the decimal point.
+
+To add a test:
+
+* Write a test function returning void with void arguments
+* Add the name of that test function only (not its entire signature) to the `TEST_LIST`
+* Add a TEST_CHECK_ or TEST_CHECK macro to your test function
+* Recompile and run your tests
+
+Here's that process in detail.
+
+### Test functions all have the same signature: `void test_example(void);`
+
+To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. For example:
+
+```c
+/* Obviously the name text_example can be changed */
+void test_example(void);
+```
+
+
+
+3.1415927
 
