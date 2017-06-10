@@ -135,64 +135,67 @@ The first test couldn't be easier. It simply verifies that the constant PI, defi
 
 To add a test:
 
-* Write a test function returning void with void arguments
-* Add the name of that test function only (not its entire signature) to the `TEST_LIST`
-* Add a TEST_CHECK_ or TEST_CHECK macro to your test function
-* Recompile and run your tests
+1. Write a test function prototype returning void with void arguments
+2. Add a description in quotes, followed by the the name of that test function only (not its entire signature) to the `TEST_LIST` array macro declaration
+3. Implement the function
+4. Add a TEST_CHECK macro to your test function. It is a macro that evaluates to a nonzero/zero result. (Another macro named TEST_CHECK_ will be discussed later.)
+5. Recompile and run your tests
 
 Here's that process in detail.
 
-### Create test functions with the signature `void test_example(void);`
-
-To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. For example:
-
-```c
-/* Obviously the name text_example can be changed */
-void test_example(void);
-```
+### 1. Add the prototype `void is_pi_accurate_to_7_digits(void);` above the `TEST_LIST` macro declaration:
 
 Let's revisit the test harness test_area.c. 
 
-* First add the prototype `void is_pi_accurate_to_7_digits(void);` above the `TEST_LIST` macro declaration:
+To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. Add this prototype above the `TEST_LIST` macro:
 
 ```c
-#include "cutest.h"
-#include "area.h"
-
-void is_pi_accurate_to_7_digits(void);
+void pi_accurate_to_7_digits(void);
 
 TEST_LIST = {
     { 0 }
 };
 ```
 
-* Add a simple description in quotes, followed by a comma, and that function's name to the TEST_LIST macro:
+### 2. Add a simple description in quotes, followed by a comma, and that function's name to the TEST_LIST macro. Enclose all this in curly braces. It is actually an array declaration so end each entry in the array with a comma too
+
+The description appears when the unit tests are run.
 
 ```c
-#include "cutest.h"
-#include "area.h"
-
-void is_pi_accurate_to_7_digits(void);
+void pi_accurate_to_7_digits(void);
 
 TEST_LIST = {
-    { "Is PI accurate to 7 digits?", is_pi_accurate_to_7_digits },
+    { "PI accurate to 7 digits", pi_accurate_to_7_digits },
     { 0 }
 };
 ```
 
-* Finally add the implementation of that function below the TEST_LIST macro:
+### 3. Add the code for that function below the TEST_LIST macro. 
 
 ```c
 TEST_LIST = {
-    { "Is PI accurate to 7 digits?", is_pi_accurate_to_7_digits },
+    { "PI accurate to 7 digits?", pi_accurate_to_7_digits },
     { 0 }
 };
 
-void is_pi_accurate_to_7_digits(void)
+void pi_accurate_to_7_digits(void)
 {
-    TEST_CHECK_(PI == 3.1415927, "PI should be %.07f. It is \n", PI);
+    /* Your code goes here */
+}
+
+```
+
+### 4. Include a TEST_CHECK macro, which is an expression evaluating to a boolean result
+
+This is any old C function. You can also include arbitrary code. In this case the only thing we need is the `TEST_CHECK` macro, which must evaluate to nonzero in order to pass the unit test:
+
+```c
+void pi_accurate_to_7_digits(void)
+{
+    TEST_CHECK_(PI == 3.1415927);
 }
 ```
+
 
 * The completed test_area.c file looks like this:
 
@@ -200,19 +203,25 @@ void is_pi_accurate_to_7_digits(void)
 #include "cutest.h"
 #include "area.h"
 
-void is_pi_accurate_to_7_digits(void);
+/* 1. Add function prototype returning void with void params. */
+void pi_accurate_to_7_digits(void);
 
+/* 2. Add description + function name to TEST_LIST array. */
 TEST_LIST = {
-    { "Is PI accurate to 7 digits?", is_pi_accurate_to_7_digits },
+    { "PI accurate to 7 digits", pi_accurate_to_7_digits },
     { 0 }
 };
 
-void is_pi_accurate_to_7_digits(void)
+/* 3. Implement the function */
+void pi_accurate_to_7_digits(void)
 {
-    TEST_CHECK_(PI == 3.1415927, "PI should be %.07f. It is \n", PI);
+
+/* 4. Include TEST_CHECK expression evaluating to boolean result. */
+    TEST_CHECK(PI == 3.1415927f);
 }
 ```
 
 
 
 
+    TEST_CHECK_(PI == 3.1415927, "PI should be %.07f. It is \n", PI);
