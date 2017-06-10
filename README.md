@@ -2,7 +2,7 @@
 
 This step-by-step tutorial shows how to create a unit test suite for modules written in C. Unit testing means writing separate test programs that exercise your existing C modules with unexpected input. As you add to your unit test suite your overall testing costs decrease and well-written tests make you and your users more confident in the quality of the software you're writing. 
 
-The target audience is intermediate C programmers who want a little handholding with an easy-to-understand unit testing framework, in this case Mity's [CUTest](https://github.com/mity/cutest/).It assumes you are using a command-line C compiler (gcc in this case). It contains full copy/pastable code to:
+The target audience is intermediate C programmers who want a little handholding with an easy-to-understand unit testing framework, in this case Mity's [CUTest](https://github.com/mity/cutest/). It assumes you are using a command-line C compiler (gcc in this case). It contains full copy/pastable code to:
 
 * Create a tiny library written in C consisting of a single source and single header file. This is a library file so it doesn't have a `main()`.
 * Compile it using the command line (Unix/MacOS)
