@@ -28,9 +28,9 @@ $ mkdir -p ~/c/circle
 $ cd ~/c/circle
 ```
 
-### Create the file area.h
+### Create the library source files
 
-First create a header file named area.h:
+* Create a header file named area.h:
 
 ```c
 #ifndef __AREA__
@@ -40,15 +40,33 @@ float area(float radius);
 #endif
 ```
 
-Next, create the library file area.c:
+* Create the library file area.c:
 
 ```c
+#include "area.h"
 float area(float radius)
 {
     if (radius <= 0)
-        return -1;
-        
+        return -1;    
     return PI * radius * radius;
 }
 ```
 
+Determining the area of a circle is easy, but normally examples contain no error checking. Remember, this is meant to simulate what you'd do with your real code, so this crucial line does the trick:
+
+```c
+    if (radius <= 0)
+        return -1;    
+```
+
+* Make sure area.c compiles correctly:
+
+```bash
+$ gcc -std=c99 fsize.c -c
+```
+
+If you're not used to compiling with the command line, some notes.
+
+* `gcc` is the name of the compiler. On MacOS you may need to download [Xcode](https://developer.apple.com/xcode/downloads/). If you haven't done so before you will be required to create a free developer's account for the privilege.
+* The command-line flag `std=c99` forces a compile using the [C99 standard](https://en.wikipedia.org/wiki/C99) version of the language. It is useful here primarily because this code uses `//` comments instead of the older `/*  */` style.
+* The command-line flag `-c` means compile but do not make an executable. Compile and correct your source as many times as is necessary until `gcc` yields no output, which means success. There's no `main` in this code so it wouldn't work anyway.
