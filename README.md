@@ -1,15 +1,17 @@
 # Tutorial for CUTest C unit testing framework by mity
 
-This step-by-step tutorial shows how to create a unit test suite for modules written in C. The target is intermediate C programmers who want a little handholding with an easy-to-understand unit testing framework, in this case Mity's [CUTest](https://github.com/mity/cutest/](https://github.com/mity/cutest/).It assumes you are using a command-line C compiler (gcc in this case). It contains full copy/pastable code to:
+This step-by-step tutorial shows how to create a unit test suite for modules written in C. Unit testing means writing separate test programs that exercise your existing C modules with unexpected input. As you add to your unit test suite your overall testing costs decrease and well-written tests make you and your users more confident in the quality of the software you're writing. 
+
+The target audience is intermediate C programmers who want a little handholding with an easy-to-understand unit testing framework, in this case Mity's [CUTest](https://github.com/mity/cutest/](https://github.com/mity/cutest/).It assumes you are using a command-line C compiler (gcc in this case). It contains full copy/pastable code to:
 
 * Create a tiny library written in C consisting of a single source and single header file. This is a library file so it doesn't have a `main()`.
 * Compile it using the command line (Unix/MacOS)
 * Add simple unit tests by including [cutest.h](https://github.com/mity/cutest) by Martin Mitáš, aka [mity](https://github.com/mity) on GitHub and invoking macros such as `TEST_CHECK()` containing boolean expressions, where zero means a failed test
 * Run the unit tests. See how both success and failure look.
 
-#### IMPORTANT NOTE
+#### NOTE: What's Missing From This Tutorial?
 
-**Feel free to contact me at tomcampbell at gmail.com with complaints or suggestions! **
+**Feel free to contact me at tomcampbell at gmail.com with complaints or suggestions!**
 
 ## Create the library module to test
 
@@ -359,6 +361,3 @@ Summary:
 
 Now go back and restore PI to its rightful value of 3.1415927f in `area.h` before you forget.
 
-## Adding another test
-
-Let's add a unit test with a bit more 
