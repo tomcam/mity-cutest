@@ -1,4 +1,4 @@
-# Tutorial for CUTest C unit testing framework by mity
+# An introduction to C Unit Testing Using CUTest (cutest.h) by mity
 
 This step-by-step tutorial shows how to create a unit test suite for modules written in C. Unit testing means writing separate test programs that exercise your existing C modules with unexpected input. As you add to your unit test suite your overall testing costs decrease and well-written tests make you and your users more confident in the quality of the software you're writing. 
 
