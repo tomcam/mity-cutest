@@ -6,7 +6,7 @@ The target audience is intermediate C programmers who want a little handholding 
 
 * Create a tiny library written in C consisting of a single source and single header file. This is a library file so it doesn't have a `main()`.
 * Compile it using the command line (Unix/MacOS)
-* Add simple unit tests by including [cutest.h](https://github.com/mity/cutest) by Martin Mitáš, aka [mity](https://github.com/mity) on GitHub and invoking macros such as `TEST_CHECK()` containing boolean expressions, where zero means a failed test
+* Add simple unit tests by including [cutest.h](https://github.com/mity/cutest) by Martin Mitáš, aka [mity](https://github.com/mity) on GitHub. These tests are simple boolean expressions wrapped by macros such as `TEST_CHECK()`. Tests evaluating to zero are failures, and nonzeros are successes.
 * Run the unit tests. See how both success and failure look.
 
 #### NOTE: What's Missing From This Tutorial?
