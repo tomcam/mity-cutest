@@ -142,7 +142,7 @@ To add a test:
 
 Here's that process in detail.
 
-### Test functions all have the same signature: `void test_example(void);`
+### Create test functions with the signature `void test_example(void);`
 
 To perform its auto-generation magic, CUTest expects all your test functions return `void` and contain a `void` parameter list. For example:
 
@@ -151,7 +151,68 @@ To perform its auto-generation magic, CUTest expects all your test functions ret
 void test_example(void);
 ```
 
+Let's revisit the test harness test_area.c. 
+
+* First add the prototype `void is_pi_accurate_to_7_digits(void);` above the `TEST_LIST` macro declaration:
+
+```c
+#include "cutest.h"
+#include "area.h"
+
+void is_pi_accurate_to_7_digits(void);
+
+TEST_LIST = {
+    { 0 }
+};
+```
+
+* Add a simple description in quotes, followed by a comma, and that function's name to the TEST_LIST macro:
+
+```c
+#include "cutest.h"
+#include "area.h"
+
+void is_pi_accurate_to_7_digits(void);
+
+TEST_LIST = {
+    { "Is PI accurate to 7 digits?", is_pi_accurate_to_7_digits },
+    { 0 }
+};
+```
+
+* Finally add the implementation of that function below the TEST_LIST macro:
+
+```c
+TEST_LIST = {
+    { "Is PI accurate to 7 digits?", is_pi_accurate_to_7_digits },
+    { 0 }
+};
+
+void is_pi_accurate_to_7_digits(void)
+{
+    TEST_CHECK_(PI == 3.1415927, "PI should be %.07f. It is \n", PI);
+}
+```
+
+* The completed test_area.c file looks like this:
+
+```c
+#include "cutest.h"
+#include "area.h"
+
+void is_pi_accurate_to_7_digits(void);
+
+TEST_LIST = {
+    { "Is PI accurate to 7 digits?", is_pi_accurate_to_7_digits },
+    { 0 }
+};
+
+void is_pi_accurate_to_7_digits(void)
+{
+    TEST_CHECK_(PI == 3.1415927, "PI should be %.07f. It is \n", PI);
+}
+```
 
 
-3.1415927
+
 
